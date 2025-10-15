@@ -9,17 +9,6 @@
  */
 int execute_command(char **command, char ***command_arguments)
 {
-	*command_arguments = malloc(sizeof(char *) * 2);
-
-	if (*command_arguments == NULL)
-	{
-		perror("malloc");
-		return (-1);
-	}
-
-	(*command_arguments)[0] = *command;
-	(*command_arguments)[1] = NULL;
-
 	if (execve(*command, *command_arguments, environ) == -1)
 	{
 		perror(*command);

@@ -13,7 +13,8 @@
 extern char **environ;
 
 int print_prompt(char **line, size_t *len);
-int get_command(char **line, char **command);
+int get_command(char **line, char **command, char ***command_arguments);
 int execute_command(char **command, char ***command_arguments);
+int _count_words(char *str);
 
 #endif

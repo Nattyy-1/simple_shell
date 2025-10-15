@@ -14,17 +14,15 @@ int main(int argc __attribute__((unused)), char **argv)
 	size_t len = 0;
 	struct stat st;
 	pid_t child_pid;
-	int status;
+	int status, i;
 
 	while (1)
 	{
 		if (print_prompt(&line, &len) == -1)
 			break;
 
-		if (get_command(&line, &command) == -1)
+		if (get_command(&line, &command, &command_arguments) == -1)
 		{
-			if (errno == ENOENT)
-				perror(argv[0]);
 			continue;
 		}
 
@@ -47,6 +45,9 @@ int main(int argc __attribute__((unused)), char **argv)
 		}
 		else
 			wait(&status);
+		for (i = 0; command_arguments[i] != NULL; i++)
+			free(command_arguments[i]);
+		free(command_arguments);
 	}
 	free(line);
 	return (0);

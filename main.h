@@ -16,5 +16,8 @@ int print_prompt(char **line, size_t *len);
 int get_command(char **line, char **command, char ***command_arguments);
 int execute_command(char **command, char ***command_arguments);
 int _count_words(char *str);
+int check_path(char **command);
+int _strlen(char *str);
+char *concatenate_path(char *absolute_path, char *command);
 
 #endif

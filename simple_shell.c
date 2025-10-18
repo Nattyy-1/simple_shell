@@ -12,7 +12,6 @@ int main(int argc __attribute__((unused)), char **argv)
 {
 	char *line = NULL, *command, **command_arguments;
 	size_t len = 0;
-	struct stat st;
 	pid_t child_pid;
 	int status, i;
 
@@ -20,18 +19,18 @@ int main(int argc __attribute__((unused)), char **argv)
 	{
 		if (print_prompt(&line, &len) == -1)
 			break;
-
 		if (get_command(&line, &command, &command_arguments) == -1)
 		{
 			continue;
 		}
-
-		if (stat(command, &st) == -1)
+		if (check_path(&command) == -1)
 		{
-			perror(argv[0]);
+			write(STDERR_FILENO, argv[0], _strlen(argv[0]));
+			write(STDERR_FILENO, ": ", 2);
+			write(STDERR_FILENO, command, _strlen(command));
+			write(STDERR_FILENO, ": not found\n", 12);
 			continue;
 		}
-
 		child_pid = fork();
 		if (child_pid == -1)
 		{
@@ -48,6 +47,7 @@ int main(int argc __attribute__((unused)), char **argv)
 		for (i = 0; command_arguments[i] != NULL; i++)
 			free(command_arguments[i]);
 		free(command_arguments);
+		free(command);
 	}
 	free(line);
 	return (0);

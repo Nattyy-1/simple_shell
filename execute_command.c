@@ -9,10 +9,15 @@
  */
 int execute_command(char **command, char ***command_arguments)
 {
+	int i;
+
 	if (execve(*command, *command_arguments, environ) == -1)
 	{
 		perror(*command);
+		for (i = 0; (*command_arguments)[i] != NULL; i++)
+			free((*command_arguments)[i]);
 		free(*command_arguments);
+
 		return (-1);
 	}
 

@@ -14,7 +14,6 @@ int get_command(char **line, char **command, char ***command_arguments)
 	int i;
 
 	(*line)[strcspn(*line, "\n")] = '\0';
-
 	argument_count = _count_words(*line);
 
 	*command = strtok(*line, " ");
@@ -27,7 +26,6 @@ int get_command(char **line, char **command, char ***command_arguments)
 		perror("malloc");
 		return (-1);
 	}
-
 	(*command_arguments)[0] = strdup(*command);
 	if ((*command_arguments)[0] == NULL)
 	{

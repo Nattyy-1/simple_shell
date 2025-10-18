@@ -13,7 +13,7 @@ int main(int argc __attribute__((unused)), char **argv)
 	char *line = NULL, *command, **command_arguments;
 	size_t len = 0;
 	pid_t child_pid;
-	int status, i;
+	int status, i, last_exit_code = 0;
 
 	while (1)
 	{
@@ -21,6 +21,11 @@ int main(int argc __attribute__((unused)), char **argv)
 			break;
 		if (get_command(&line, &command, &command_arguments) == -1)
 		{
+			continue;
+		}
+		if (is_builtin(command))
+		{
+			handle_builtin(command, last_exit_code);
 			continue;
 		}
 		if (check_path(&command) == -1)
@@ -43,7 +48,10 @@ int main(int argc __attribute__((unused)), char **argv)
 				_exit(1);
 		}
 		else
+		{
 			wait(&status);
+			last_exit_code = WEXITSTATUS(status);
+		}
 		for (i = 0; command_arguments[i] != NULL; i++)
 			free(command_arguments[i]);
 		free(command_arguments);

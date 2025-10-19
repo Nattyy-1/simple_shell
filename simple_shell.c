@@ -25,7 +25,7 @@ int main(int argc __attribute__((unused)), char **argv)
 		}
 		if (is_builtin(command))
 		{
-			handle_builtin(command, last_exit_code);
+			handle_builtin(command, last_exit_code, command_arguments, argv[0]);
 			for (i = 0; command_arguments[i] != NULL; i++)
 				free(command_arguments[i]);
 			free(command_arguments);

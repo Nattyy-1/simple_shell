@@ -16,7 +16,7 @@ int get_command(char **line, char **command, char ***command_arguments)
 	(*line)[strcspn(*line, "\n")] = '\0';
 	argument_count = _count_words(*line);
 
-	*command = strtok(*line, " ");
+	*command = _strtok(*line, " ");
 	if (*command == NULL)
 		return (-1);
 
@@ -36,7 +36,7 @@ int get_command(char **line, char **command, char ***command_arguments)
 
 	for (i = 1; i < argument_count; i++)
 	{
-		(*command_arguments)[i] = strdup(strtok(NULL, " "));
+		(*command_arguments)[i] = strdup(_strtok(NULL, " "));
 		if ((*command_arguments)[i] == NULL)
 		{
 			perror("strdup");

@@ -23,7 +23,7 @@ int check_path(char **command)
 	if (!path_copy)
 		return (-1);
 
-	absolute_path = strtok(path_copy, ":");
+	absolute_path = _strtok(path_copy, ":");
 	absolute_path = concatenate_path(absolute_path, *command);
 	if (stat(absolute_path, &st) == 0)
 	{
@@ -34,7 +34,7 @@ int check_path(char **command)
 	free(absolute_path);
 	while (1)
 	{
-		absolute_path = strtok(NULL, ":");
+		absolute_path = _strtok(NULL, ":");
 		if (absolute_path == NULL)
 		{
 			free(path_copy);

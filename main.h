@@ -1,6 +1,8 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#define BUF_SIZE 1024
+
 #include <unistd.h>
 #include <string.h>
 #include <sys/types.h>
@@ -21,6 +23,7 @@ int _strlen(char *str);
 int is_builtin(char *command);
 int _strcmp(char *str1, char *str2);
 char *concatenate_path(char *absolute_path, char *command);
+char *_strtok(char *str, const char *delim);
 void handle_builtin(char *command, int last_exit_code);
 void print_env(void);
 

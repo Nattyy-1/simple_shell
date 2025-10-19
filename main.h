@@ -22,5 +22,6 @@ int is_builtin(char *command);
 int _strcmp(char *str1, char *str2);
 char *concatenate_path(char *absolute_path, char *command);
 void handle_builtin(char *command, int last_exit_code);
+void print_env(void);
 
 #endif

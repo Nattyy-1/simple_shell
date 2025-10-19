@@ -8,7 +8,7 @@
  */
 int is_builtin(char *command)
 {
-	if (_strcmp(command, "exit") == 0)
+	if (_strcmp(command, "exit") == 0 || _strcmp(command, "env") == 0)
 		return (1);
 
 	return (0);

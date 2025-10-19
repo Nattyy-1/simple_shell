@@ -26,6 +26,9 @@ int main(int argc __attribute__((unused)), char **argv)
 		if (is_builtin(command))
 		{
 			handle_builtin(command, last_exit_code);
+			for (i = 0; command_arguments[i] != NULL; i++)
+				free(command_arguments[i]);
+			free(command_arguments);
 			continue;
 		}
 		if (check_path(&command) == -1)

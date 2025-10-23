@@ -15,4 +15,6 @@ void handle_builtin(char *command, int last_exit_code, char **command_arguments,
 		print_env();
 	else if (_strcmp(command, "setenv") == 0)
 		set_env(command_arguments);
+	else if (_strcmp(command, "unsetenv") == 0)
+		unset_env(command_arguments);
 }

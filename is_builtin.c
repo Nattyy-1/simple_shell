@@ -9,7 +9,8 @@
 int is_builtin(char *command)
 {
 	if (_strcmp(command, "exit") == 0 || _strcmp(command, "env") == 0 ||
-	    _strcmp(command, "setenv") == 0 || _strcmp(command, "unsetenv") == 0)
+	    _strcmp(command, "setenv") == 0 || _strcmp(command, "unsetenv") == 0
+	    || _strcmp(command, "cd") == 0)
 		return (1);
 
 	return (0);

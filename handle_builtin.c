@@ -17,4 +17,6 @@ void handle_builtin(char *command, int last_exit_code, char **command_arguments,
 		set_env(command_arguments);
 	else if (_strcmp(command, "unsetenv") == 0)
 		unset_env(command_arguments);
+	else if (_strcmp(command, "cd") == 0)
+		cd(command_arguments, shell_name);
 }

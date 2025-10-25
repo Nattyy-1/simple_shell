@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <limits.h>
 
 extern char **environ;
 extern char **_envirion;
@@ -32,5 +33,6 @@ void print_env(void);
 void exit_shell(int last_exit_code, char **command_arguments, char *shell_name);
 void set_env(char **command_arguments);
 void unset_env(char **command_arguments);
+void cd(char **command_arguments, char *shell_name);
 
 #endif

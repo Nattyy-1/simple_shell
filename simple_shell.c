@@ -20,6 +20,7 @@ int main(int argc __attribute__((unused)), char **argv)
 		if (print_prompt(&line, &len) == -1)
 			break;
 
+		handle_comment(&line);
 		sub_strings = get_substrings(line);
 		if (!sub_strings)
 			continue;

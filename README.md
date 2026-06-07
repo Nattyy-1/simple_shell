@@ -50,27 +50,31 @@ This project replicates the behavior of `sh` (the standard UNIX shell) by implem
 
 | File | Description |
 |------|-------------|
-| `simple_shell.c` | Main entry point — reads input loop, forks, and waits for child processes |
+| `simple_shell.c` | Main entry point — input loop (`main`) and per-command execution (`run_command`) |
 | `print_prompt.c` | Displays the prompt and reads a line of input using `getline()` |
 | `handle_comment.c` | Strips comments from input lines |
 | `get_substrings.c` | Splits input into individual commands using `;` as delimiter |
 | `get_command.c` | Parses a command line into the command name and argument array |
 | `execute_command.c` | Calls `execve()` to execute the resolved command |
 | `check_path.c` | Searches `PATH` directories for the executable |
+| `free_command.c` | Frees a command string and its argument vector |
 | `handle_builtin.c` | Dispatches built-in command handlers |
 | `is_builtin.c` | Checks if a command is a shell built-in |
 | `cd.c` | Handles directory changes (HOME, OLDPWD, `-`, relative/absolute) |
 | `print_env.c` | Prints all environment variables |
 | `set_env.c` | Sets or updates an environment variable |
 | `unset_env.c` | Removes an environment variable |
+| `own_environ.c` | Deep-copies `environ` on first mutation so entries can be freed safely |
 | `exit_shell.c` | Exits the shell with optional status code validation |
 | `concatenate_env.c` | Builds `NAME=value` strings for the environment |
 | `concatenate_path.c` | Builds full executable paths from directory + command |
 | `_strlen.c` | Custom string length implementation |
 | `_strcmp.c` | Custom string comparison implementation |
-| `_strtok.c` | Custom string tokenizer |
+| `_strtok.c` | Custom string tokenizer (returns interior pointers; not reentrant) |
 | `_count_words.c` | Counts space-separated words in a string |
 | `_is_number.c` | Validates whether a string is a valid integer |
+| `Makefile` | Build, style-check, and test automation |
+| `tests/run_tests.sh` | Functional test suite |
 
 ## Requirements
 
@@ -80,9 +84,32 @@ This project replicates the behavior of `sh` (the standard UNIX shell) by implem
 
 ## Build
 
+Using the Makefile (recommended):
+
+```bash
+make            # build ./hsh (incremental)
+make re         # clean rebuild
+make clean      # remove binary and object files
+```
+
+Or compile directly:
+
 ```bash
 gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
 ```
+
+## Testing
+
+```bash
+make test       # run the functional test suite
+make test-mem   # run the suite under AddressSanitizer/LeakSanitizer
+make betty      # check Betty style compliance
+```
+
+`tests/run_tests.sh` exercises external commands, `PATH` resolution, all
+built-ins, comments, multi-command lines, whitespace handling, and exit
+codes. `make test-mem` additionally verifies the suite runs free of memory
+leaks and invalid frees.
 
 ## Usage
 

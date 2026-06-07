@@ -7,7 +7,8 @@
  * @command_arguments: the list of arguments passed with the command
  * @shell_name: the name of the shell
  */
-void handle_builtin(char *command, int last_exit_code, char **command_arguments, char *shell_name)
+void handle_builtin(char *command, int last_exit_code,
+		char **command_arguments, char *shell_name)
 {
 	if (_strcmp(command, "exit") == 0)
 		exit_shell(last_exit_code, command_arguments, shell_name);

@@ -5,8 +5,7 @@
  * @env_name: the name of the environmental variable
  * @env_value: the value of the envirionmental variable
  *
- * Return: pointer to newly allocated string containing the environmental variable, 
- * 	   or NULL on failure
+ * Return: pointer to a newly allocated NAME=value string, or NULL on failure
  */
 char *concatenate_env(char *env_name, char *env_value)
 {

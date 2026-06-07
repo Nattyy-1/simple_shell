@@ -1,28 +1,23 @@
 #include "main.h"
 
 /**
- * get_substrings - extracts the different commands passed using the separator ;
- * @line: the line containing the multiple commands
+ * count_commands - counts the ';'-separated commands in a line
+ * @line: the line to inspect
  *
- * Return: an array of strings which are commands to the shell
+ * Return: the number of commands, or -1 on allocation failure
  */
-char **get_substrings(char *line)
+int count_commands(char *line)
 {
-	int count = 0, i;
+	int count = 0;
 	char *token;
 	char *line_copy;
-	char **sub_strings;
-
-	if (line == NULL)
-		return (NULL);
 
 	line_copy = strdup(line);
 	if (!line_copy)
 	{
 		perror("strdup");
-		return (NULL);
+		return (-1);
 	}
-
 	token = _strtok(line_copy, ";");
 	while (token)
 	{
@@ -30,6 +25,28 @@ char **get_substrings(char *line)
 		token = _strtok(NULL, ";");
 	}
 	free(line_copy);
+	return (count);
+}
+
+/**
+ * get_substrings - splits a line into commands using ';' as separator
+ * @line: the line containing the multiple commands
+ *
+ * Return: an array of strings which are commands to the shell
+ */
+char **get_substrings(char *line)
+{
+	int count, i;
+	char *token;
+	char *line_copy;
+	char **sub_strings;
+
+	if (line == NULL)
+		return (NULL);
+
+	count = count_commands(line);
+	if (count == -1)
+		return (NULL);
 
 	sub_strings = malloc(sizeof(char *) * (count + 1));
 	if (!sub_strings)
@@ -37,7 +54,6 @@ char **get_substrings(char *line)
 		perror("malloc");
 		return (NULL);
 	}
-
 	line_copy = strdup(line);
 	if (!line_copy)
 	{
@@ -45,7 +61,6 @@ char **get_substrings(char *line)
 		free(sub_strings);
 		return (NULL);
 	}
-
 	token = _strtok(line_copy, ";");
 	for (i = 0; token; i++)
 	{
@@ -53,7 +68,6 @@ char **get_substrings(char *line)
 		token = _strtok(NULL, ";");
 	}
 	sub_strings[i] = NULL;
-
 	free(line_copy);
 	return (sub_strings);
 }

@@ -1,9 +1,33 @@
 #include "main.h"
 
 /**
- * check_path - checks whether the command passed to the shell exists
- *		accross the system using the PATH environmental variable
- * @command: the command that is being checked
+ * search_path - searches PATH directories for an executable
+ * @path_copy: a writable copy of the PATH variable (tokenized in place)
+ * @command: the command name to look for
+ *
+ * Return: a heap-allocated absolute path, or NULL if not found
+ */
+char *search_path(char *path_copy, char *command)
+{
+	struct stat st;
+	char *dir, *absolute_path;
+
+	dir = _strtok(path_copy, ":");
+	while (dir != NULL)
+	{
+		absolute_path = concatenate_path(dir, command);
+		if (stat(absolute_path, &st) == 0)
+			return (absolute_path);
+		free(absolute_path);
+		dir = _strtok(NULL, ":");
+	}
+	return (NULL);
+}
+
+/**
+ * check_path - resolves a command to an executable path via PATH
+ * @command: the command being checked; on success it is freed and
+ *           replaced with a heap-allocated absolute path
  *
  * Return: 0 if command is found, otherwise -1
  */
@@ -23,30 +47,12 @@ int check_path(char **command)
 	if (!path_copy)
 		return (-1);
 
-	absolute_path = _strtok(path_copy, ":");
-	absolute_path = concatenate_path(absolute_path, *command);
-	if (stat(absolute_path, &st) == 0)
-	{
-		*command = absolute_path;
-		free(path_copy);
-		return (0);
-	}
-	free(absolute_path);
-	while (1)
-	{
-		absolute_path = _strtok(NULL, ":");
-		if (absolute_path == NULL)
-		{
-			free(path_copy);
-			return (-1);
-		}
-		absolute_path = concatenate_path(absolute_path, *command);
-		if (stat(absolute_path, &st) == 0)
-		{
-			*command = absolute_path;
-			free(path_copy);
-			return (0);
-		}
-		free(absolute_path);
-	}
+	absolute_path = search_path(path_copy, *command);
+	free(path_copy);
+	if (absolute_path == NULL)
+		return (-1);
+
+	free(*command);
+	*command = absolute_path;
+	return (0);
 }
